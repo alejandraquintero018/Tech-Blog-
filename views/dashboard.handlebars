@@ -1,0 +1,31 @@
+<div class="container text-center">
+    <h1> Welcome Back, {{name}}</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <h3> Generate a new Blog Post </h3>
+        <div class="form new-blog-form">
+            <div class="mb-3">
+                <label for="post-title" class="form-label">Post Title: </label>
+                <input type="text" class="form-control" id="post-title" placeholder="Next Viral Blog Post">
+            </div>
+            <div class="mb-3">
+                <label for="post-title" class="form-label">Copy and Paste your blog post here</label>
+                <textarea type="text" class="form-control" id="post-content" rows="4"></textarea>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{{!-- {{#if projects.length}}
+<div class="container">
+    <div id="past-posts" class="mb-3">
+        <h3> Past Blog Posts </h3>
+
+        {{#each post as |post|}}
+        <h5> {{post.title}}</h5>
+    </div>
+
+</div> --}}

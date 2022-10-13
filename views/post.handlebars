@@ -1,23 +1,22 @@
 
-
  <div id="cardstyling" class="container">
-        <div class="card w-100">
-            <div class="card-body">
-                <h5 class="card-title"></h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p>
-                    <a id="headingstyling" class="btn btn-primary" data-bs-toggle="collapse" href="#comment" role="button"
-                        aria-expanded="false" aria-controls="collapseExample">
-                        Leave a Comment
-                    </a>
-                <div class="collapse" id="comment">
-                    <div class="input-group">
-                        <span class="input-group-text">With textarea</span>
-                        <textarea class="form-control" aria-label="With textarea"></textarea>
-                    </div>
+    <div class="card w-100">
+        <div class="card-body">
+            <h5 class="card-title">{{post.title}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{post.user.username}} on {{format_date post.date_created}} </h6>
+            <p class="card-text">{{post.content}}</p>
+            {{!-- <p>
+                <a class="btn btn-primary" data-bs-toggle="collapse" href="#comment" role="button" aria-expanded="false"
+                    aria-controls="collapseExample">
+                    Leave a Comment
+                </a>
+                {{!-- ask about how and where to store the comments left behind by users --}}
+            <div class="collapse" id="comment">
+                <div class="input-group">
+                    <textarea class="form-control" aria-label="With textarea">{{comment.comment}}</textarea>
                 </div>
+            </div> --}}
 
-            </div>
         </div>
-
     </div>
+</div>
