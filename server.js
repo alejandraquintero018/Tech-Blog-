@@ -1,15 +1,15 @@
+const path = require('path'); 
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers');
-const path = require('path'); 
 const bcrypt = require('bcrypt'); 
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
 
 const sequelize = require('./config/connection');
-const { strict } = require('assert');
+//const { strict } = require('assert');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
@@ -19,7 +19,7 @@ const hbs = exphbs.create({});
 const sess = {
   secret: 'Super secret secret',
   cookie: {
-    maxage: 5000,
+    maxage: 50000,
     httpOnly: true,
     secure: false, 
     sameSite: 'strict' 
@@ -42,6 +42,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(routes);
 
-sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log('Now listening'));
+// sequelize.sync({ force: false }).then(() => {
+//   app.listen(PORT, () => console.log('Now listening'));
+// });
+
+
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}!`);
+  sequelize.sync({ force: false });
 });

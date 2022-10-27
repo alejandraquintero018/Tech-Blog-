@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
     try {
         const postData = await Post.findAll({
             include: [{ model: User }],
-           // attributes: { exclude: ['password'] },
+            attributes: { exclude: ['password'] },
             //order: [['name', 'ASC']],
         });
 
@@ -21,32 +21,74 @@ router.get('/', async (req, res) => {
     }
 });
 
- router.get('/dashboard', withAuth, async (req, res) => {
+router.get('/post/:id', async (req, res) => {
     try {
-      // Find the logged in user based on the session ID
-      const userData = await User.findByPk(req.session.user_id, {
-        attributes: { exclude: ['password'] },
-        include: [{ model: Post }],
-      });
-  
-      const user = userData.get({ plain: true });
-  
-      res.render('dashboard', {
-        ...user,
-        logged_in: true
-      });
+        const postData = await Post.findByPk(req.params.id, {
+            include: [
+                User,
+                {
+                    model: Comment,
+                    include: [User],
+                },
+            ],
+        });
+
+        if (postData) {
+            const post = postData.get({ plain: true });
+
+            res.render('post', { post });
+        }
+        else {
+            res.status(404).end();
+        }
     } catch (err) {
-      res.status(500).json(err);
+        res.status(500).json(err);
     }
-  });
+});
+
+router.get('/dashboard', withAuth, async (req, res) => {
+    try {
+        // Find the logged in user based on the session ID
+        const userData = await User.findByPk(req.session.user_id, {
+            // attributes: { exclude: ['password'] },
+            // include: [{ model: Post }],
+        });
+
+        const user = userData.get({ plain: true });
+
+        const postData = await Post.findAll({
+            where: { user_id: req.session.user_id, },
+
+        },
+            {
+                include: [{ model: User }]
+            });
+        const posts = postData.map(post => {
+            return post.get({ plain: true })
+        });
+        console.log(posts);
+
+        res.render('dashboard', {
+            user,
+            posts,
+            logged_in: true
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// router.get('/dashboard', (req, res) => {
+//     res.render("dashboard"); 
+// });  
 
 
 router.get('/login', async (req, res) => {
     if (req.session.logged_in) {
-        res.redirect('/profile');
+        res.redirect('/dashboard');
         return;
-      }
-      res.render("login"); 
+    }
+    res.render("login");
 
 })
 

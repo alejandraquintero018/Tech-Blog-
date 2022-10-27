@@ -1,10 +1,9 @@
-
-{{#each post as |post| }}
+{{#each posts as |post| }}
 <div id="cardstyling" class="container">
     <div class="card w-100">
         <div class="card-body">
-            <h5 class="card-title"><a href="/post/{{post.id}}"> {{post.title}} </a></h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{post.user.username}} on {{format_date post.date_created}} </h6>
+            <h5 class="card-title"> {{post.title}} </h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{user.username}} on {{ post.date_created}} </h6>
             <p class="card-text"><a href="/post/{{post.id}}"></a>{{post.content}}</p>
             <p>
                 <a class="btn btn-primary" data-bs-toggle="collapse" href="#comment" role="button" aria-expanded="false"
