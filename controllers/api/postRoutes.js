@@ -1,21 +1,21 @@
-const router = require('express').Router(); 
-const { Post } = require('../../models'); 
-const withAuth = require('../../utils/auth'); 
+const router = require('express').Router();
+const { Post } = require('../../models');
+const withAuth = require('../../utils/auth');
 
 router.post('/', withAuth, async (req, res) => {
-    console.log('here'); 
+    console.log('here');
     try {
         const newPost = await Post.create({
-            ...req.body, 
+            ...req.body,
             user_id: req.session.user_id,
         });
-        res.status(200).json(newPost); 
-    }catch(err){
-        res.status(400).json(err); 
+        res.status(200).json(newPost);
+    } catch (err) {
+        res.status(400).json(err);
     }
-}); 
+});
 
-router.delete('./:id', async (req, res) => {
+router.delete('/:id', withAuth, async (req, res) => {
     try {
         const postData = await Post.destroy({
             where: {
@@ -25,14 +25,37 @@ router.delete('./:id', async (req, res) => {
 
         });
 
-        if(!postData) {
+        if (!postData) {
             res.status(404).json({ message: 'doesnt exist' });
             return;
         }
 
         res.status(200).json(postData);
     } catch (err) {
-        res.status(500).json(err); 
+        res.status(500).json(err);
     }
 });
+
+router.put('/:id', withAuth, async (req, res) => {
+    console.log('here'); 
+    try {
+        console.log(req.body); 
+        const [postData] = await Post.update(
+          req.body,
+             {
+            where: {
+                id: req.params.id
+            },
+        });
+        if (postData > 0) {
+            res.status(200).end();
+          } else {
+            res.status(404).end();
+          }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+
 module.exports = router;  

@@ -4,6 +4,7 @@ const session = require('express-session');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers');
 const bcrypt = require('bcrypt'); 
+const helpers = require('./utils/helpers');
 const saltRounds = 10;
 const myPlaintextPassword = 's0/\/\P4$$w0rD';
 const someOtherPlaintextPassword = 'not_bacon';
@@ -14,7 +15,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const hbs = exphbs.create({});
+const hbs = exphbs.create({ helpers });
 
 const sess = {
   secret: 'Super secret secret',

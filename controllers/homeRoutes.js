@@ -3,15 +3,22 @@ const { User, Post, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
-    console.log('here');
     try {
         const postData = await Post.findAll({
-            include: [{ model: User }],
+            include: [
+                User,
+                {
+                    model: Comment,
+                    include: [User],
+                },
+            ],
             attributes: { exclude: ['password'] },
+            
             //order: [['name', 'ASC']],
         });
-
+        
         const posts = postData.map((post) => post.get({ plain: true }));
+        console.log( posts );
         res.render('homepage', {
             posts,
             logged_in: req.session.logged_in,
@@ -22,6 +29,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/post/:id', async (req, res) => {
+
     try {
         const postData = await Post.findByPk(req.params.id, {
             include: [
@@ -32,10 +40,9 @@ router.get('/post/:id', async (req, res) => {
                 },
             ],
         });
-
         if (postData) {
             const post = postData.get({ plain: true });
-
+            console.log(post); 
             res.render('post', { post });
         }
         else {
@@ -78,9 +85,19 @@ router.get('/dashboard', withAuth, async (req, res) => {
     }
 });
 
-// router.get('/dashboard', (req, res) => {
-//     res.render("dashboard"); 
-// });  
+router.get("/edit/:id", withAuth, async (req, res) =>  {
+    try {
+        const postData = await Post.findByPk(req.params.id)
+
+        const post = postData.get({ plain: true })
+        res.render('edit', {
+            layout: 'main',
+             post  });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+
+}); 
 
 
 router.get('/login', async (req, res) => {
