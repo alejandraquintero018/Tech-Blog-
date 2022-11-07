@@ -92,6 +92,7 @@ router.get("/edit/:id", withAuth, async (req, res) =>  {
         const post = postData.get({ plain: true })
         res.render('edit', {
             layout: 'main',
+            logged_in: true,
              post  });
     } catch (err) {
         res.status(500).json(err);

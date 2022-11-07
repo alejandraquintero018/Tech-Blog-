@@ -21,4 +21,4 @@ const editFormhandler = async (event) => {
     // }
 };
 
-document.querySelector('.edit-button').addEventListener('submit', editFormhandler);
+document.querySelector('.new-blog-form').addEventListener('submit', editFormhandler);
